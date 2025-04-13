@@ -694,11 +694,16 @@ void Application::runExternalProgram(const QString &programTemplate, const BitTo
 void Application::sendNotificationEmail(const BitTorrent::Torrent *torrent)
 {
     // Prepare mail content
+    const qlonglong dlDuration = torrent->activeTime() - torrent->finishedTime();
+    const QString dlAvg = Utils::Misc::friendlyUnit((torrent->totalDownload() / ((dlDuration == 0) ? -1 : dlDuration)), true);
+
     const QString content = tr("Torrent name: %1").arg(torrent->name()) + u'\n'
         + tr("Torrent size: %1").arg(Utils::Misc::friendlyUnit(torrent->wantedSize())) + u'\n'
         + tr("Save path: %1").arg(torrent->savePath().toString()) + u"\n\n"
         + tr("The torrent was downloaded in %1.", "The torrent was downloaded in 1 hour and 20 seconds")
-            .arg(Utils::Misc::userFriendlyDuration(torrent->activeTime())) + u"\n\n\n"
+            .arg(Utils::Misc::userFriendlyDuration(torrent->activeTime())) + u"\n"
+        + tr("%1 (%2 avg.)", "%1 and %2 are speed rates, e.g. 200KiB/s (100KiB/s avg.)")
+            .arg(Utils::Misc::friendlyUnit(torrent->downloadPayloadRate(), true), dlAvg) + u"\n\n"    
         + tr("Thank you for using qBittorrent.") + u'\n';
 
     // Send the notification email

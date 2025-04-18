@@ -702,8 +702,11 @@ void Application::sendNotificationEmail(const BitTorrent::Torrent *torrent)
         + tr("Save path: %1").arg(torrent->savePath().toString()) + u"\n\n"
         + tr("The torrent was downloaded in %1.", "The torrent was downloaded in 1 hour and 20 seconds")
             .arg(Utils::Misc::userFriendlyDuration(torrent->activeTime())) + u"\n"
-        + tr("%1 (%2 avg.)", "%1 and %2 are speed rates, e.g. 200KiB/s (100KiB/s avg.)")
-            .arg(Utils::Misc::friendlyUnit(torrent->downloadPayloadRate(), true), dlAvg) + u"\n\n"    
+        + tr("%1 avg.", "%1 and %2 are speed rates, e.g. 200KiB/s (100KiB/s avg.)")
+            .arg(dlAvg) + u"\n"
+        + tr("%1 peak", "%1 and %2 are speed rates, e.g. 200KiB/s (100KiB/s avg.)")
+            .arg(Utils::Misc::friendlyUnit(torrent->downloadPeakRate(), true)) + u"\n\n"           
+            
         + tr("Thank you for using qBittorrent.") + u'\n';
 
     // Send the notification email

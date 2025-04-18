@@ -1552,6 +1552,19 @@ qreal TorrentImpl::realRatio() const
     return (ratio > MAX_RATIO) ? MAX_RATIO : ratio;
 }
 
+int TorrentImpl::uploadPeakRate() const
+{
+    // workaround: suppress the speed for Stopped state
+    return m_peakUploadRate;
+}
+
+int TorrentImpl::downloadPeakRate() const
+{
+    // workaround: suppress the speed for Stopped state
+    return m_peakDownloadRate;
+}
+
+
 int TorrentImpl::uploadPayloadRate() const
 {
     // workaround: suppress the speed for Stopped state
@@ -2653,6 +2666,14 @@ void TorrentImpl::updateStatus(const lt::torrent_status &nativeStatus)
 
     m_payloadRateMonitor.addSample({nativeStatus.download_payload_rate
                               , nativeStatus.upload_payload_rate});
+
+    const SpeedSampleAvg speedAverage = m_payloadRateMonitor.average();
+
+    if (speedAverage.download > m_peakDownloadRate)
+        m_peakDownloadRate = speedAverage.download;
+
+    if (speedAverage.upload > m_peakUploadRate)
+        m_peakUploadRate = speedAverage.upload;
 
     if (hasMetadata())
     {

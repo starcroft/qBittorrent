@@ -215,6 +215,8 @@ namespace BitTorrent
         qreal popularity() const override;
         int uploadPayloadRate() const override;
         int downloadPayloadRate() const override;
+        int uploadPeakRate() const override;
+        int downloadPeakRate() const override;        
         qlonglong totalPayloadUpload() const override;
         qlonglong totalPayloadDownload() const override;
         int connectionsCount() const override;
@@ -374,6 +376,8 @@ namespace BitTorrent
         qreal m_ratioLimit = 0;
         int m_seedingTimeLimit = 0;
         int m_inactiveSeedingTimeLimit = 0;
+        int m_peakDownloadRate;
+        int m_peakUploadRate; 
         ShareLimitAction m_shareLimitAction = ShareLimitAction::Default;
         TorrentOperatingMode m_operatingMode = TorrentOperatingMode::AutoManaged;
         TorrentContentLayout m_contentLayout = TorrentContentLayout::Original;

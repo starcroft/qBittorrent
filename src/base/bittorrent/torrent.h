@@ -287,6 +287,8 @@ namespace BitTorrent
         virtual qreal popularity() const = 0;
         virtual int uploadPayloadRate() const = 0;
         virtual int downloadPayloadRate() const = 0;
+        virtual int uploadPeakRate() const = 0;
+        virtual int downloadPeakRate() const = 0;
         virtual qlonglong totalPayloadUpload() const = 0;
         virtual qlonglong totalPayloadDownload() const = 0;
         virtual int connectionsCount() const = 0;
